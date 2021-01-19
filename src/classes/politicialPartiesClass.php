@@ -58,7 +58,7 @@ class parties
                     $politicalParty = $row['party_id'];
                     $distanceXpoint = pow($x - $xAs, 2);
                     $distanceYpoint = pow($y - $yAs, 2);
-                    $distantXYpoint = $distanceXpoint - $distanceYpoint;
+                    $distantXYpoint = sqrt($distanceXpoint + $distanceYpoint);
                     $result = array(
                         "id" => $politicalParty,
                         "distance" => $distantXYpoint
