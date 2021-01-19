@@ -6,7 +6,7 @@
  * Time: 09:54
  */
 
-class dbClass
+class db
 {
     public function connect()
     {

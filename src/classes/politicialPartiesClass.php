@@ -6,7 +6,7 @@
  * Time: 09:56
  */
 
-class politicialPartiesClass
+class parties
 {
     public function getParties() {
 
