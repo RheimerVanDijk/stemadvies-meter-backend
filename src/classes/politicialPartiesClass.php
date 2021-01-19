@@ -43,4 +43,46 @@ class parties
             ]);
         }
     }
+
+    public function partyResult($x, $y) {
+        try {
+            $connection = (new db)->connect();
+            $stmt = $connection->prepare('SELECT * FROM `political_parties`');
+//            $result = array();
+            $resultTotal = array();
+//            $resultParty = array();
+            if ($stmt->execute()) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $xAs = $row['x_position'];
+                    $yAs = $row['y_position'];
+                    $politicalParty = $row['party_id'];
+                    $distanceXpoint = pow($x - $xAs, 2);
+                    $distanceYpoint = pow($y - $yAs, 2);
+                    $distantXYpoint = $distanceXpoint - $distanceYpoint;
+                    $result = array(
+                        "id" => $politicalParty,
+                        "distance" => $distantXYpoint
+                    );
+                    array_push($resultTotal, $result);
+                }
+            }
+//            $closest = 0;
+//            for ($i = 0; $i < count($resultTotal); $i++) {
+//                if ($closest === 0) {
+//                    $closest = $resultTotal[$i]['distance'];
+//                } else if ($resultTotal[$i]['distance'] > 0 && $resultTotal[$i]['distance'] <= abs($closest)) {
+//                    $closest = $resultTotal[$i]['distance'];
+//                } else if ($resultTotal[$i]['distance'] < 0 && -$resultTotal[$i]['distance'] > abs($closest)) {
+//                    $closest = $resultTotal[$i]['distance'];
+//                }
+//            }
+            return $resultTotal;
+        }
+        catch (PDOException $e) {
+            return json_encode([
+                'type' => 'error',
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
 }
