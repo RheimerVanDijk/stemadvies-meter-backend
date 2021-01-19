@@ -55,12 +55,14 @@ class parties
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $xAs = $row['x_position'];
                     $yAs = $row['y_position'];
-                    $politicalParty = $row['party_id'];
+                    $politicalPartyID = $row['party_id'];
+                    $politicalPartyName = $row['name'];
                     $distanceXpoint = pow($x - $xAs, 2);
                     $distanceYpoint = pow($y - $yAs, 2);
                     $distantXYpoint = sqrt($distanceXpoint + $distanceYpoint);
                     $result = array(
-                        "id" => $politicalParty,
+                        "id" => $politicalPartyID,
+                        "politicParty" => $politicalPartyName,
                         "distance" => $distantXYpoint
                     );
                     array_push($resultTotal, $result);
