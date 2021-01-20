@@ -48,9 +48,7 @@ class parties
         try {
             $connection = (new db)->connect();
             $stmt = $connection->prepare('SELECT * FROM `political_parties`');
-//            $result = array();
             $resultTotal = array();
-//            $resultParty = array();
             if ($stmt->execute()) {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $xAs = $row['x_position'];
@@ -68,17 +66,9 @@ class parties
                     array_push($resultTotal, $result);
                 }
             }
-//            $closest = 0;
-//            for ($i = 0; $i < count($resultTotal); $i++) {
-//                if ($closest === 0) {
-//                    $closest = $resultTotal[$i]['distance'];
-//                } else if ($resultTotal[$i]['distance'] > 0 && $resultTotal[$i]['distance'] <= abs($closest)) {
-//                    $closest = $resultTotal[$i]['distance'];
-//                } else if ($resultTotal[$i]['distance'] < 0 && -$resultTotal[$i]['distance'] > abs($closest)) {
-//                    $closest = $resultTotal[$i]['distance'];
-//                }
-//            }
-            return $resultTotal;
+            $distance = array_column($resultTotal, 'distance');
+            $minDistanceMap = $resultTotal[array_search(min($distance), $distance)];
+            return $minDistanceMap;
         }
         catch (PDOException $e) {
             return json_encode([
