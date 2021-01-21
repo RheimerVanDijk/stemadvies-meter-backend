@@ -8,12 +8,13 @@ $questionsClass = (new questions());
 $partiesClass = (new parties());
 $answersClass = (new answersClass());
 
-$questions = [1, 2, 3, 4];
-$anwsers = ['true', 'false', 'none', 'false'];
+$answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "answer": "true" }]';
 
-$answersJson = array("question_id" => $questions, "anwser" => $anwsers);
+$answersJsonArr = $answers;
 
-$calculatedAxis = $answersClass->calculateAnwsers(json_encode($answersJson));
+$calculatedAxis = $answersClass->calculateAnswers($answersJsonArr);
+
+$resultParties = $partiesClass->partyResult($calculatedAxis);
 
 $result = $questionsClass->getQuestions();
 
@@ -21,7 +22,8 @@ $chosenParties = $partiesClass->chosenParties(1);
 
 $getParties = $partiesClass->getParties();
 
-$resultParties = $partiesClass->partyResult(1, 5);
+
+var_dump($resultParties);
 
 $getParties = $partiesClass->getParties();
 // $resultParties = $partiesClass->partyResult(1, 5);
