@@ -3,15 +3,16 @@ require_once("dbClass.php");
 
 class answersClass
 {
-    public function calculateAnswers($answersJsonArr) {
+    public function calculateAnswers($answersJsonArr)
+    {
         try {
             $answersArray = json_decode($answersJsonArr, true);
 
             $connection = (new db)->connect();
             $stmt = $connection->prepare('SELECT * FROM questions');
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//            var_dump($result);
+            $result = $stmt->fetchAll();
+            //            var_dump($result);
             $x = -1;
             $xAxisVal = 0;
             $yAxisVal = 0;
