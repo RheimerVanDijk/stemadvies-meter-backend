@@ -13,7 +13,8 @@ $answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "
 $answersJsonArr = $answers;
 
 $calculatedAxis = $answersClass->calculateAnswers($answersJsonArr);
-var_dump($calculatedAxis);
+
+$resultParties = $partiesClass->partyResult($calculatedAxis);
 
 $result = $questionsClass->getQuestions();
 
@@ -21,7 +22,8 @@ $chosenParties = $partiesClass->chosenParties(1);
 
 $getParties = $partiesClass->getParties();
 
-$resultParties = $partiesClass->partyResult(1, 5);
+
+var_dump($resultParties);
 
 $getParties = $partiesClass->getParties();
 // $resultParties = $partiesClass->partyResult(1, 5);

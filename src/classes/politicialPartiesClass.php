@@ -39,9 +39,12 @@ class parties
         }
     }
 
-    public function partyResult($x, $y)
+    public function partyResult($axis)
     {
         try {
+            $axisArray = json_decode($axis, true);
+            $x = $axisArray['x_axis'];
+            $y = $axisArray['y_axis'];
             $connection = (new db)->connect();
             $stmt = $connection->prepare('SELECT * FROM `political_parties`');
             $resultTotal = array();
@@ -64,7 +67,7 @@ class parties
             }
             $distance = array_column($resultTotal, 'distance');
             $minDistanceMap = $resultTotal[array_search(min($distance), $distance)];
-            return $minDistanceMap;
+            return json_encode($minDistanceMap);
         } catch (PDOException $e) {
             return json_encode([
                 'type' => 'error',
