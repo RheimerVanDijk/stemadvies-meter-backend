@@ -9,7 +9,7 @@ class parties
             $connection = (new db)->connect();
             $stmt = $connection->prepare('SELECT * FROM `political_parties`');
             $stmt->execute();
-            $result = $stmt->fetchAll();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
             return json_encode([

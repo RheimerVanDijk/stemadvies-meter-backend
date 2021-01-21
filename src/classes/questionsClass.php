@@ -9,7 +9,7 @@ class questions
             $connection = (new db)->connect();
             $stmt = $connection->prepare('SELECT * FROM questions');
             $stmt->execute();
-            $result = $stmt->fetchAll();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
             return json_encode([
