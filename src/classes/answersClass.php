@@ -16,11 +16,8 @@ class answersClass
             $stmt = $connection->prepare('SELECT * FROM questions');
             $stmt->execute();
             $result = $stmt->fetchAll();
-            $i = 0;
-            var_dump($answersArray);
-            foreach ($answersArray as $question) {
-                $i++;
-                echo $question[$i];
+            foreach ($answersArray as $x => $question) {
+                echo $x;
             }
             return $result;
         } catch (PDOException $e) {
