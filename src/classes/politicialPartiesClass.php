@@ -92,7 +92,6 @@ class parties
             $stmt->bindParam(':y_position', $this->y_position);
             $stmt->bindParam(':ammount_chosen', $this->ammount_chosen);
             $stmt->execute();
-            // $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return json_encode([
                 'type' => 'success',
                 'msg' => 'Partij is succesvol toegevoegd'

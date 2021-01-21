@@ -5,17 +5,16 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Access-Control-Allow-Origin, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-Width');
 
-include_once '../src/classes/politicialPartiesClass.php';
+include_once '../src/classes/questionsClass.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$partiesClass = (new parties());
+$questionsClass = (new questions());
 
-$partiesClass->name = $data->name;
-$partiesClass->x_position = $data->x_position;
-$partiesClass->y_position = $data->y_position;
-$partiesClass->ammount_chosen = $data->ammount_chosen;
+$questionsClass->question = $data->question;
+$questionsClass->axis = $data->axis;
+$questionsClass->value = $data->value;
 
-$createParties = $partiesClass->createParties();
+$createQuestions = $questionsClass->createQuestions();
 
-echo $createParties;
+echo $createQuestions;
