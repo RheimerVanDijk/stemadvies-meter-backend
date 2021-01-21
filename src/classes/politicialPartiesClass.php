@@ -72,4 +72,33 @@ class parties
             ]);
         }
     }
+
+    public function createParties()
+    {
+        try {
+            $connection = (new db)->connect();
+            $stmt = $connection->prepare('INSERT INTO `political_parties` SET name = :name, x_position = :x_position, y_position = :y_position, ammount_chosen = :ammount_chosen');
+
+            $this->name = htmlspecialchars(strip_tags($this->name));
+            $this->x_position = htmlspecialchars(strip_tags($this->x_position));
+            $this->y_position = htmlspecialchars(strip_tags($this->y_position));
+            $this->ammount_chosen = htmlspecialchars(strip_tags($this->ammount_chosen));
+
+            $stmt->bindParam(':name', $this->name);
+            $stmt->bindParam(':x_position', $this->x_position);
+            $stmt->bindParam(':y_position', $this->y_position);
+            $stmt->bindParam(':ammount_chosen', $this->ammount_chosen);
+            $stmt->execute();
+            // $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode([
+                'type' => 'success',
+                'msg' => 'Partij is succesvol toegevoegd'
+            ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'type' => 'error',
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
 }
