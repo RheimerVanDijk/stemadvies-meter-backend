@@ -39,6 +39,10 @@ $questionsResult = json_decode($questionsResult, true);
 // var_dump($result);
 
 
+if(isset($_POST["addNewPartie"])) {
+    $partiesClass->createParties();
+}
+
 ?>
 
 <!doctype html>
@@ -58,7 +62,14 @@ $questionsResult = json_decode($questionsResult, true);
     <h1>stemwijzer</h1>
     <div class="parties">
         <h3>Partijen</h3>
-        <button type="button" class="btn btn-primary">Partij toevoegen</button>
+        <form method="post" action="">
+            <input type="text" name="namePartie" required>
+            <input type="number" min="-5" max="5" name="x" required>
+            <input type="number" min="-5" max="5" name="y" required>
+            <input type="hidden" value="0" name="ammount_chosen">
+            <button type="submit" class="btn btn-primary" name="addNewPartie">Partij toevoegen</button>
+        </form>
+
         <?php $parties = array();
         for ($i = 0; $i < count($partyResult); $i++) {
             echo '<div id="party-' . $i . '">' . $partyResult[$i]["name"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
