@@ -1,7 +1,7 @@
 <?php
-require_once ("src/classes/questionsClass.php");
-require_once ("src/classes/politicialPartiesClass.php");
-require_once ("src/classes/answersClass.php");
+require_once("src/classes/questionsClass.php");
+require_once("src/classes/politicialPartiesClass.php");
+require_once("src/classes/answersClass.php");
 require_once("src/classes/questionsClass.php");
 require_once("src/classes/politicialPartiesClass.php");
 $questionsClass = (new questions());
@@ -38,13 +38,21 @@ $questionsResult = json_decode($questionsResult, true);
 // var_dump($resultParties);
 // var_dump($result);
 
-
-if(isset($_POST["addNewPartie"])) {
+if (isset($_POST["addNewPartie"])) {
+    $partiesClass->name = $_POST["namePartie"];
+    $partiesClass->x_position = $_POST["x"];
+    $partiesClass->y_position = $_POST["y"];
+    $partiesClass->ammount_chosen = $_POST["ammount_chosen"];
     $partiesClass->createParties();
+    echo "<meta http-equiv='refresh' content='0'>";
 }
 
-if(isset($_POST["addNewQuestion"])) {
+if (isset($_POST["addNewQuestion"])) {
+    $questionsClass->question = $_POST["question"];
+    $questionsClass->axis = $_POST["axis"];
+    $questionsClass->value = $_POST["valueAxis"];
     $questionsClass->createQuestions();
+    echo "<meta http-equiv='refresh' content='0'>";
 }
 
 ?>
@@ -95,7 +103,7 @@ if(isset($_POST["addNewQuestion"])) {
             </select>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag toevoegen</button>
         </form>
-        
+
         <?php $questions = array();
         for ($i = 0; $i < count($questionsResult); $i++) {
             echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
@@ -121,4 +129,5 @@ if(isset($_POST["addNewQuestion"])) {
         }
     }
 </script>
+
 </html>

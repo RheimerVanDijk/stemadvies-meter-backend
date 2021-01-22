@@ -81,10 +81,10 @@ class parties
         try {
             $connection = (new db)->connect();
             $stmt = $connection->prepare('INSERT INTO `political_parties` SET name = :name, x_position = :x_position, y_position = :y_position, ammount_chosen = :ammount_chosen');
-            $this->name = htmlspecialchars(strip_tags($_POST["namePartie"]));
-            $this->x_position = htmlspecialchars(strip_tags($_POST["x"]));
-            $this->y_position = htmlspecialchars(strip_tags($_POST["y"]));
-            $this->ammount_chosen = htmlspecialchars(strip_tags($_POST["ammount_chosen"]));
+            $this->name = htmlspecialchars(strip_tags($this->name));
+            $this->x_position = htmlspecialchars(strip_tags($this->x_position));
+            $this->y_position = htmlspecialchars(strip_tags($this->y_position));
+            $this->ammount_chosen = htmlspecialchars(strip_tags($this->ammount_chosen));
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':x_position', $this->x_position);
             $stmt->bindParam(':y_position', $this->y_position);
