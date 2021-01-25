@@ -98,17 +98,56 @@ if(isset($_POST["addNewQuestion"])) {
             </select>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag toevoegen</button>
         </form>
-        <h5>Vragen aanpassen</h5>
-        <form method="post" action="">
-            <input type="text" name="question">
-            <button type="submit" class="btn btn-primary" name="EditQuestion">Vraag Aanpassen</button>
+        <form method="post">
+            <input type="hidden" value="<?php echo $_GET['id'] ?>" name="id" >
+            <div class="Naam-e">
+                <div class="Post-e">
+                    <label>Id-Vraag</label>
+                    <input type="text" name="Post" class="Idvraag" value="<?=$Idvraag?>">
+                </div>
+                <label>Vraag </label>
+                <input type="text" name="username" class="vraag" value="<?=$Vraag ?>">
+            </div>
+            <div class="Submit-e">
+                <input type="submit" class="btn btn-primary" value="Vraag aanpassen" name="Submit">
+            </div>
         </form>
         
         <?php $questions = array();
         for ($i = 0; $i < count($questionsResult); $i++) {
             echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
-        } ?>
+        }
+
+//Edit systeem mee bezig by Dante.
+
+        if(isset($_POST['Submit'])){
+            $sql = "UPDATE `question` SET `question` = '" . mysqli_real_escape_string($conn, $_POST['vraag']) . "' , `question_id` =  '" . mysqli_real_escape_string($conn, $_POST['question_id']) . "' WHERE question_id = " . (int)$_POST['question_id'];
+            $crud = null;
+            $data = false;
+            $result = $conn->query($sql);
+            if(!$result) echo mysqli_error();
+        }
+
+        if (isset($_GET['id'])) {
+            $sql = "SELECT `question_id`, `question` FROM `questions` WHERE question_id = " . (int)$_GET['question_id'];
+            $crud = null;
+            $data = false;
+            if ($result = $conn->query($sql)) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                    $Idvraag = $row["question_id"];
+                    $Vraag = $row["question"];
+                }
+            }
+
+        }
+
+        //
+        ?>
+
+
         <button id="myButton" class="float-left submit-button" >Home</button>
+            </div>
         <div></div>
     </div>
 
