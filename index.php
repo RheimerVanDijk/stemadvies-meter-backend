@@ -55,6 +55,17 @@ if (isset($_POST["addNewQuestion"])) {
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
+if (isset($_GET["party_id"])) {
+    $partiesClass->party_id = $_GET["party_id"];
+    $partiesClass->deleteParties();
+    header( "Location: 'index.php'" );
+}
+
+if (isset($_GET["question_id"])) {
+    $questionsClass->question_id = $_GET["question_id"];
+    $questionsClass->deleteQuestions();
+}
+
 ?>
 
 <!doctype html>
@@ -84,7 +95,7 @@ if (isset($_POST["addNewQuestion"])) {
 
         <?php $parties = array();
         for ($i = 0; $i < count($partyResult); $i++) {
-            echo '<div id="party-' . $i . '">' . $partyResult[$i]["name"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
+            echo '<div id="party-' . $i . '">' . $partyResult[$i]["name"] . ' <a href="index.php"><i class="far fa-edit"></i></a><a href="index.php?party_id=' . $partyResult[$i]["party_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
         } ?>
     </div>
     <div class="questions">
@@ -106,7 +117,7 @@ if (isset($_POST["addNewQuestion"])) {
 
         <?php $questions = array();
         for ($i = 0; $i < count($questionsResult); $i++) {
-            echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
+            echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a><a href="index.php?question_id=' . $questionsResult[$i]["question_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
         } ?>
 
         <div></div>
