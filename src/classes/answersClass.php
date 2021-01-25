@@ -35,7 +35,7 @@ class answersClass
                     }
                 }
             }
-            return json_encode(array("x_axis" => $xAxisVal, "y_axis" => $yAxisVal));
+            return array("x_axis" => $xAxisVal, "y_axis" => $yAxisVal);
         } catch (PDOException $e) {
             return json_encode([
                 'type' => 'error',

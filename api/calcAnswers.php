@@ -11,7 +11,12 @@ $data = $_POST['answersJsonArr'];
 
 $answersClass = (new answersClass());
 $politicialPartyClass= (new parties());
-$answersResult = $answersClass->calculateAnswers($data);
-$answersResult = $politicialPartyClass->partyResult($answersResult);
-echo json_encode($answersResult, JSON_PRETTY_PRINT);
-echo json_encode($politicialPartyClass, JSON_PRETTY_PRINT);
+$awnserLocation = $answersClass->calculateAnswers($data);
+$top3parties = $politicialPartyClass->partyResult($answersResult);
+
+$returnData = [
+  "location" => $answersResult,
+  "top3Parties" => $top3parties
+];
+
+echo json_encode($returnData);

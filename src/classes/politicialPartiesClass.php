@@ -42,7 +42,7 @@ class parties
     public function partyResult($axis)
     {
         try {
-            $axisArray = json_decode($axis, true);
+            $axisArray = $axis;
             $x = $axisArray['x_axis'];
             $y = $axisArray['y_axis'];
             $connection = (new db)->connect();
