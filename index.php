@@ -82,6 +82,8 @@ if(isset($_POST["addNewQuestion"])) {
     </div>
     <div class="questions">
         <h3>Vragen</h3>
+
+        <h5>Vragen toevoegen</h5>
         <form method="post" action="">
             <input type="text" name="question">
             <select name="axis" id="axis">
@@ -96,12 +98,17 @@ if(isset($_POST["addNewQuestion"])) {
             </select>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag toevoegen</button>
         </form>
+        <h5>Vragen aanpassen</h5>
+        <form method="post" action="">
+            <input type="text" name="question">
+            <button type="submit" class="btn btn-primary" name="EditQuestion">Vraag Aanpassen</button>
+        </form>
         
         <?php $questions = array();
         for ($i = 0; $i < count($questionsResult); $i++) {
             echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
         } ?>
-
+        <button id="myButton" class="float-left submit-button" >Home</button>
         <div></div>
     </div>
 
