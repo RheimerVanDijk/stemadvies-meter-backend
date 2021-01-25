@@ -8,7 +8,8 @@ $questionsClass = (new questions());
 $partiesClass = (new parties());
 $answersClass = (new answersClass());
 
-$answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "answer": "true" }]';
+$answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "answer": "false" }, { "question_id": "3", "answer": "false" }
+, { "question_id": "4", "answer": "true" }, { "question_id": "5", "answer": "true" }, { "question_id": "6", "answer": "true" }]';
 
 $answersJsonArr = $answers;
 
