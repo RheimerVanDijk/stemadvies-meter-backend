@@ -5,7 +5,7 @@ class db
     {
         $dns = 'mysql:host=localhost;dbname=stemwijzer';
         $user = 'root';
-        $pass = '';
+        $pass = '8269';
 
         return new PDO($dns, $user, $pass);
     }
