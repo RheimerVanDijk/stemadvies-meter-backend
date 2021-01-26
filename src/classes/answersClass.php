@@ -12,7 +12,6 @@ class answersClass
             $stmt = $connection->prepare('SELECT * FROM questions');
             $stmt->execute();
             $result = $stmt->fetchAll();
-            //            var_dump($result);
             $x = -1;
             $xAxisVal = 0;
             $yAxisVal = 0;
