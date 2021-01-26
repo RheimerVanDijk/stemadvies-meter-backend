@@ -80,6 +80,11 @@ if(isset($_POST["addNewQuestion"])) {
             echo '<div id="party-' . $i . '">' . $partyResult[$i]["name"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
         } ?>
     </div>
+    <h5>Partij aanpassen</h5>
+    <form method="post" action="">
+        <input type="text" name="question">
+        <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij veranderen</button>
+    </form>
     <div class="questions">
         <h3>Vragen</h3>
 
