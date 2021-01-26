@@ -82,7 +82,7 @@ if(isset($_POST["addNewQuestion"])) {
     </div>
     <h5>Partij aanpassen</h5>
     <form method="post" action="">
-        <input type="text" name="question">
+        <input type="text" name="Vraag" class="vraag" value="<?=$name ?>">
         <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij veranderen</button>
     </form>
     <div class="questions">
@@ -107,11 +107,9 @@ if(isset($_POST["addNewQuestion"])) {
             <input type="hidden" value="<?php echo $_GET['id'] ?>" name="id" >
             <div class="Naam-e">
                 <div class="Post-e">
-                    <label>Id-Vraag</label>
-                    <input type="text" name="Post" class="Idvraag" value="<?=$Idvraag?>">
-                </div>
+                    <h5>Vraag aanpassen</h5>
                 <label>Vraag </label>
-                <input type="text" name="username" class="vraag" value="<?=$Vraag ?>">
+                <input type="text" name="Vraag" class="vraag" value="<?=$Vraag ?>">
             </div>
             <div class="Submit-e">
                 <input type="submit" class="btn btn-primary" value="Vraag aanpassen" name="Submit">
@@ -124,7 +122,7 @@ if(isset($_POST["addNewQuestion"])) {
         }
 
 //Edit systeem mee bezig by Dante.
-
+//Vragen
         if(isset($_POST['Submit'])){
             $sql = "UPDATE `question` SET `question` = '" . mysqli_real_escape_string($conn, $_POST['vraag']) . "' , `question_id` =  '" . mysqli_real_escape_string($conn, $_POST['question_id']) . "' WHERE question_id = " . (int)$_POST['question_id'];
             $crud = null;
@@ -142,6 +140,28 @@ if(isset($_POST["addNewQuestion"])) {
                     $data = $row;
                     $Idvraag = $row["question_id"];
                     $Vraag = $row["question"];
+                }
+            }
+
+        }
+//Politieke partijen
+        if(isset($_POST['Submit'])){
+            $sql = "UPDATE `name` SET `name` = '" . mysqli_real_escape_string($conn, $_POST['name']) . "' , `party_id` =  '" . mysqli_real_escape_string($conn, $_POST['party_id']) . "' WHERE party_id = " . (int)$_POST['party_id'];
+            $crud = null;
+            $data = false;
+            $result = $conn->query($sql);
+            if(!$result) echo mysqli_error();
+        }
+
+        if (isset($_GET['id'])) {
+            $sql = "SELECT `party_id`, `name` FROM `political_parties` WHERE party_id = " . (int)$_GET['party_id'];
+            $crud = null;
+            $data = false;
+            if ($result = $conn->query($sql)) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                    $party_id = $row["party_id"];
+                    $name = $row["name"];
                 }
             }
 
