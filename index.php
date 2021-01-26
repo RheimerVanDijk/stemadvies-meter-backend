@@ -44,7 +44,7 @@ if (isset($_POST["addNewPartie"])) {
     $partiesClass->y_position = $_POST["y"];
     $partiesClass->ammount_chosen = $_POST["ammount_chosen"];
     $partiesClass->createParties();
-    echo "<meta http-equiv='refresh' content='0'>";
+    header("Location: index.php");
 }
 
 if (isset($_POST["addNewQuestion"])) {
@@ -52,18 +52,19 @@ if (isset($_POST["addNewQuestion"])) {
     $questionsClass->axis = $_POST["axis"];
     $questionsClass->value = $_POST["valueAxis"];
     $questionsClass->createQuestions();
-    echo "<meta http-equiv='refresh' content='0'>";
+    header("Location: index.php");
 }
 
 if (isset($_GET["party_id"])) {
     $partiesClass->party_id = $_GET["party_id"];
     $partiesClass->deleteParties();
-    header( "Location: 'index.php'" );
+    header("Location: index.php");
 }
 
 if (isset($_GET["question_id"])) {
     $questionsClass->question_id = $_GET["question_id"];
     $questionsClass->deleteQuestions();
+    header("Location: index.php");
 }
 
 ?>
