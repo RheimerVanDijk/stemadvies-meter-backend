@@ -13,10 +13,11 @@ $answersClass = (new answersClass());
 $politicialPartyClass= (new parties());
 $location = $answersClass->calculateAnswers($data);
 $top3Parties = $politicialPartyClass->partyResult($location);
+$calculatedPercentParties = $answersClass->calcResultPercent($top3Parties);
 
 $returnData = [
   "location" => $location,
-  "top3Parties" => $top3Parties
+  "top3Parties" => $calculatedPercentParties
 ];
 
 echo json_encode($returnData);
