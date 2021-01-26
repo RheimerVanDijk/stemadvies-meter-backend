@@ -7,9 +7,16 @@ header('Content-Type: application/json');
 include_once '../src/classes/answersClass.php';
 include_once '../src/classes/politicialPartiesClass.php';
 
+$data = $_POST['answersJsonArr'];
+
 $answersClass = (new answersClass());
 $politicialPartyClass= (new parties());
-$answersResult = $answersClass->calculateAnswers($answersJsonArr);
-$answersResult = $politicialPartyClass->partyResult($answersResult);
-echo json_encode($answersResult, JSON_PRETTY_PRINT);
-echo json_encode($politicialPartyClass, JSON_PRETTY_PRINT);
+$location = $answersClass->calculateAnswers($data);
+$top3Parties = $politicialPartyClass->partyResult($location);
+
+$returnData = [
+  "location" => $location,
+  "top3Parties" => $top3Parties
+];
+
+echo json_encode($returnData);
