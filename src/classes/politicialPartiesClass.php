@@ -42,7 +42,7 @@ class parties
     public function partyResult($axis)
     {
         try {
-            $axisArray = json_decode($axis, true);
+            $axisArray = $axis;
             $x = $axisArray['x_axis'];
             $y = $axisArray['y_axis'];
             $connection = (new db)->connect();
@@ -65,9 +65,12 @@ class parties
                     array_push($resultTotal, $result);
                 }
             }
-            $distance = array_column($resultTotal, 'distance');
-            $minDistanceMap = $resultTotal[array_search(min($distance), $distance)];
-            return json_encode($minDistanceMap);
+            function sortByOrder($a, $b) {
+                return $a['distance'] > $b['distance'];
+            }
+            usort($resultTotal, 'sortByOrder');
+            $top3Result = array_slice($resultTotal, 0 ,3);
+            return $top3Result;
         } catch (PDOException $e) {
             return json_encode([
                 'type' => 'error',

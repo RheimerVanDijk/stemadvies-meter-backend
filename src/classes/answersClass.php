@@ -12,7 +12,6 @@ class answersClass
             $stmt = $connection->prepare('SELECT * FROM questions');
             $stmt->execute();
             $result = $stmt->fetchAll();
-            //            var_dump($result);
             $x = -1;
             $xAxisVal = 0;
             $yAxisVal = 0;
@@ -35,7 +34,7 @@ class answersClass
                     }
                 }
             }
-            return json_encode(array("x_axis" => $xAxisVal, "y_axis" => $yAxisVal));
+            return array("x_axis" => $xAxisVal, "y_axis" => $yAxisVal);
         } catch (PDOException $e) {
             return json_encode([
                 'type' => 'error',
