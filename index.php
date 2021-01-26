@@ -24,7 +24,7 @@ $chosenParties = $partiesClass->chosenParties(1);
 $getParties = $partiesClass->getParties();
 
 
-var_dump($resultParties);
+//var_dump($resultParties);
 
 $getParties = $partiesClass->getParties();
 // $resultParties = $partiesClass->partyResult(1, 5);
@@ -48,6 +48,55 @@ if(isset($_POST["addNewQuestion"])) {
     $questionsClass->createQuestions();
 }
 
+$Idvraag = 0;
+$Vraag = 0;
+$name = 0;
+
+//Edit systeem mee bezig by Dante.
+//Vragen
+if(isset($_POST['Submit'])){
+    $sql = "UPDATE `question` SET `question` = '" . mysqli_real_escape_string($conn, $_POST['vraag']) . "' , `question_id` =  '" . mysqli_real_escape_string($conn, $_POST['question_id']) . "' WHERE question_id = " . (int)$_POST['question_id'];
+    $crud = null;
+    $data = false;
+    $result = $conn->query($sql);
+    if(!$result) echo mysqli_error();
+}
+
+if (isset($_GET['id'])) {
+    $sql = "SELECT `question_id`, `question` FROM `questions` WHERE question_id = " . (int)$_GET['question_id'];
+    $crud = null;
+    $data = false;
+    if ($result = $conn->query($sql)) {
+        while ($row = $result->fetch_assoc()) {
+            $data = $row;
+            $Idvraag = $row["question_id"];
+            $Vraag = $row["question"];
+        }
+    }
+
+}
+//Politieke partijen
+if(isset($_POST['Submit'])){
+    $sql = "UPDATE `name` SET `name` = '" . mysqli_real_escape_string($conn, $_POST['name']) . "' , `party_id` =  '" . mysqli_real_escape_string($conn, $_POST['party_id']) . "' WHERE party_id = " . (int)$_POST['party_id'];
+    $crud = null;
+    $data = false;
+    $result = $conn->query($sql);
+    if(!$result) echo mysqli_error();
+}
+
+if (isset($_GET['id'])) {
+    $sql = "SELECT `party_id`, `name` FROM `political_parties` WHERE party_id = " . (int)$_GET['party_id'];
+    $crud = null;
+    $data = false;
+    if ($result = $conn->query($sql)) {
+        while ($row = $result->fetch_assoc()) {
+            $data = $row;
+            $party_id = $row["party_id"];
+            $name = $row["name"];
+        }
+    }
+//
+}
 ?>
 
 <!doctype html>
@@ -80,11 +129,7 @@ if(isset($_POST["addNewQuestion"])) {
             echo '<div id="party-' . $i . '">' . $partyResult[$i]["name"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
         } ?>
     </div>
-    <h5>Partij aanpassen</h5>
-    <form method="post" action="">
-        <input type="text" name="Vraag" class="vraag" value="<?=$name ?>">
-        <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij veranderen</button>
-    </form>
+
     <div class="questions">
         <h3>Vragen</h3>
 
@@ -103,10 +148,16 @@ if(isset($_POST["addNewQuestion"])) {
             </select>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag toevoegen</button>
         </form>
+        <h5>Partij aanpassen</h5>
+        <form method="post" action="">
+            <label>Partij </label>
+            <input type="text" name="Vraag" class="vraag" value="<?=$name ?>"><Br>
+            <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij veranderen</button>
+        </form>
         <form method="post">
             <input type="hidden" value="<?php echo $_GET['id'] ?>" name="id" >
-            <div class="Naam-e">
-                <div class="Post-e">
+            <div class="Class">
+                <div class="Vraag">
                     <h5>Vraag aanpassen</h5>
                 <label>Vraag </label>
                 <input type="text" name="Vraag" class="vraag" value="<?=$Vraag ?>">
@@ -120,63 +171,11 @@ if(isset($_POST["addNewQuestion"])) {
         for ($i = 0; $i < count($questionsResult); $i++) {
             echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a></div>';
         }
-
-//Edit systeem mee bezig by Dante.
-//Vragen
-        if(isset($_POST['Submit'])){
-            $sql = "UPDATE `question` SET `question` = '" . mysqli_real_escape_string($conn, $_POST['vraag']) . "' , `question_id` =  '" . mysqli_real_escape_string($conn, $_POST['question_id']) . "' WHERE question_id = " . (int)$_POST['question_id'];
-            $crud = null;
-            $data = false;
-            $result = $conn->query($sql);
-            if(!$result) echo mysqli_error();
-        }
-
-        if (isset($_GET['id'])) {
-            $sql = "SELECT `question_id`, `question` FROM `questions` WHERE question_id = " . (int)$_GET['question_id'];
-            $crud = null;
-            $data = false;
-            if ($result = $conn->query($sql)) {
-                while ($row = $result->fetch_assoc()) {
-                    $data = $row;
-                    $Idvraag = $row["question_id"];
-                    $Vraag = $row["question"];
-                }
-            }
-
-        }
-//Politieke partijen
-        if(isset($_POST['Submit'])){
-            $sql = "UPDATE `name` SET `name` = '" . mysqli_real_escape_string($conn, $_POST['name']) . "' , `party_id` =  '" . mysqli_real_escape_string($conn, $_POST['party_id']) . "' WHERE party_id = " . (int)$_POST['party_id'];
-            $crud = null;
-            $data = false;
-            $result = $conn->query($sql);
-            if(!$result) echo mysqli_error();
-        }
-
-        if (isset($_GET['id'])) {
-            $sql = "SELECT `party_id`, `name` FROM `political_parties` WHERE party_id = " . (int)$_GET['party_id'];
-            $crud = null;
-            $data = false;
-            if ($result = $conn->query($sql)) {
-                while ($row = $result->fetch_assoc()) {
-                    $data = $row;
-                    $party_id = $row["party_id"];
-                    $name = $row["name"];
-                }
-            }
-
-        }
-
-        //
         ?>
-
-
         <button id="myButton" class="float-left submit-button" >Home</button>
             </div>
         <div></div>
     </div>
-
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
