@@ -27,22 +27,14 @@ $chosenParties = $partiesClass->chosenParties(1);
 
 $getParties = $partiesClass->getParties();
 
-
-//var_dump($resultParties);
-
 $getParties = $partiesClass->getParties();
-// $resultParties = $partiesClass->partyResult(1, 5);
 
 $partyResult = json_encode($getParties);
+
 $partyResult = json_decode($partyResult, true);
 
 $questionsResult = json_encode($result);
 $questionsResult = json_decode($questionsResult, true);
-// var_dump($chosenParties);
-// echo json_encode($getParties);
-// var_dump($resultParties);
-// var_dump($result);
-
 
 if(isset($_POST["addNewPartie"])) {
     $partiesClass->createParties();
@@ -125,7 +117,7 @@ if (isset($_GET['id'])) {
             <input type="number" min="-5" max="5" name="x" required>
             <input type="number" min="-5" max="5" name="y" required>
             <input type="hidden" value="0" name="ammount_chosen">
-            <button type="submit" class="btn btn-primary" name="addNewPartie">Partij toevoegen</button>
+            <button type="submit" class="btn btn-primary" name="addNewPartie">Partij Toevoegen</button>
         </form>
 
         <?php $parties = array();
@@ -142,21 +134,21 @@ if (isset($_GET['id'])) {
             <input type="text" name="question">
             <select name="axis" id="axis">
                 <option disabled selected value> -- selecteer een optie -- </option>
-                <option value="x" id="linksRechts">links of rechts</option>
-                <option value="y" id="progressiefConservatief">progressief of conservatief</option>
+                <option value="x" id="linksRechts">Links of Rechts</option>
+                <option value="y" id="progressiefConservatief">Progressief of Conservatief</option>
             </select>
             <select name="valueAxis" id="valueAxis" style="visibility: hidden">
                 <option disabled selected value> -- selecteer een optie -- </option>
                 <option value="-1" id="minus"></option>
                 <option value="1" id="plus"></option>
             </select>
-            <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag toevoegen</button>
+            <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag Toevoegen</button>
         </form>
         <h5>Partij aanpassen</h5>
         <form method="post" action="">
             <label>Partij </label>
             <input type="text" name="Vraag" class="vraag" value="<?=$name ?>"><Br>
-            <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij veranderen</button>
+            <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij Veranderen</button>
         </form>
         <form method="post">
             <input type="hidden" value="<?php echo $_GET['id'] ?>" name="id" >
