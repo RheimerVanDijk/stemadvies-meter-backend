@@ -55,6 +55,17 @@ if (isset($_POST["addNewPartie"])) {
     $partiesClass->x_position = $_POST["x"];
     $partiesClass->y_position = $_POST["y"];
     $partiesClass->amount_chosen = $_POST["amount_chosen"];
+    $partiesClass->createParties();
+    header("Location: index.php");
+}
+
+if (isset($_POST["editPartie"])) {
+    $partiesClass->party_id = $_POST["editPartieID"];
+    $partiesClass->name = $_POST["namePartie"];
+    $partiesClass->x_position = $_POST["x"];
+    $partiesClass->y_position = $_POST["y"];
+    $partiesClass->updateParties();
+    header("Location: index.php");
 }
 
 if (isset($_POST["addNewQuestion"])) {
@@ -77,54 +88,6 @@ if (isset($_GET["question_id"])) {
     header("Location: index.php");
 }
 
-$Idvraag = 0;
-$Vraag = 0;
-$name = 0;
-
-//Edit systeem mee bezig by Dante.
-//Vragen
-if (isset($_POST['Submit'])) {
-    $sql = "UPDATE `question` SET `question` = '" . mysqli_real_escape_string($conn, $_POST['vraag']) . "' , `question_id` =  '" . mysqli_real_escape_string($conn, $_POST['question_id']) . "' WHERE question_id = " . (int)$_POST['question_id'];
-    $crud = null;
-    $data = false;
-    $result = $conn->query($sql);
-    if (!$result) echo mysqli_error();
-}
-
-if (isset($_GET['id'])) {
-    $sql = "SELECT `question_id`, `question` FROM `questions` WHERE question_id = " . (int)$_GET['question_id'];
-    $crud = null;
-    $data = false;
-    if ($result = $conn->query($sql)) {
-        while ($row = $result->fetch_assoc()) {
-            $data = $row;
-            $Idvraag = $row["question_id"];
-            $Vraag = $row["question"];
-        }
-    }
-}
-//Politieke partijen
-if (isset($_POST['Submit'])) {
-    $sql = "UPDATE `name` SET `name` = '" . mysqli_real_escape_string($conn, $_POST['name']) . "' , `party_id` =  '" . mysqli_real_escape_string($conn, $_POST['party_id']) . "' WHERE party_id = " . (int)$_POST['party_id'];
-    $crud = null;
-    $data = false;
-    $result = $conn->query($sql);
-    if (!$result) echo mysqli_error();
-}
-
-if (isset($_GET['id'])) {
-    $sql = "SELECT `party_id`, `name` FROM `political_parties` WHERE party_id = " . (int)$_GET['party_id'];
-    $crud = null;
-    $data = false;
-    if ($result = $conn->query($sql)) {
-        while ($row = $result->fetch_assoc()) {
-            $data = $row;
-            $party_id = $row["party_id"];
-            $name = $row["name"];
-        }
-    }
-    //
-}
 ?>
 
 <!doctype html>
@@ -145,16 +108,20 @@ if (isset($_GET['id'])) {
     <div class="parties">
         <h3>Partijen</h3>
         <form method="post" action="">
-            <input type="text" name="namePartie" required>
-            <input type="number" min="-5" max="5" name="x" required>
-            <input type="number" min="-5" max="5" name="y" required>
+            <input type="text" id="namePartie" name="namePartie" placeholder="Naam partij" required>
+            <input type="number" min="-5" max="5" id="x" name="x" value="0" required>
+            <input type="number" min="-5" max="5" id="y" name="y" value="0" required>
             <input type="hidden" value="0" name="amount_chosen">
-            <button type="submit" class="btn btn-primary" name="addNewPartie">Partij Toevoegen</button>
+            <button type="submit" class="btn btn-primary" name="addNewPartie">Partij Toevoegen</button><br>
+            <h5>Partij aanpassen</h5>
+            <label>Partij </label>
+            <input type="number" min="0" max="999" id="editPartieID" name="editPartieID" value="0"><Br>
+            <button type="submit" class="btn btn-primary" name="editPartie">Partij Veranderen</button>
         </form>
 
         <?php $parties = array();
         for ($i = 0; $i < count($partyResult); $i++) {
-            echo '<div id="party-' . $i . '">' . $partyResult[$i]["name"] . ' <a href="index.php"><i class="far fa-edit"></i></a><a href="index.php?party_id=' . $partyResult[$i]["party_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
+            echo '<div id="party-' . $partyResult[$i]["party_id"] . '" x="' . $partyResult[$i]["x_position"] . '" Y="' . $partyResult[$i]["y_position"] . '">' . $partyResult[$i]["name"] . ' <a href="index.php?party_id=' . $partyResult[$i]["party_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
         } ?>
     </div>
 
@@ -176,19 +143,13 @@ if (isset($_GET['id'])) {
             </select>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag Toevoegen</button>
         </form>
-        <h5>Partij aanpassen</h5>
-        <form method="post" action="">
-            <label>Partij </label>
-            <input type="text" name="Vraag" class="vraag" value="<?= $name ?>"><Br>
-            <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij Veranderen</button>
-        </form>
         <form method="post">
             <input type="hidden" value="" name="id">
             <div class="Class">
                 <div class="Vraag">
                     <h5>Vraag aanpassen</h5>
                     <label>Vraag </label>
-                    <input type="text" name="Vraag" class="vraag" value="<?= $Vraag ?>">
+                    <input type="text" name="Vraag" class="vraag" value="">
                 </div>
                 <div class="Submit-e">
                     <input type="submit" class="btn btn-primary" value="Vraag aanpassen" name="Submit">
@@ -197,7 +158,7 @@ if (isset($_GET['id'])) {
 
         <?php $questions = array();
         for ($i = 0; $i < count($questionsResult); $i++) {
-            echo '<div id="question-' . $i . '">' . $i . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php"><i class="far fa-edit"></i></a><a href="index.php?question_id=' . $questionsResult[$i]["question_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
+            echo '<div id="question-' . $i . '">' . $questionsResult[$i]["question_id"] . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php?question_id=' . $questionsResult[$i]["question_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
         } ?>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -213,6 +174,66 @@ if (isset($_GET['id'])) {
         } else if (document.getElementById("axis").value == "y") {
             document.getElementById("minus").innerHTML = "Conservatief";
             document.getElementById("plus").innerHTML = "Progressief";
+        }
+    }
+
+    document.querySelector('#editPartieID').addEventListener("change", editParty);
+
+    function editParty() {
+        if (document.querySelector('#editPartieID').value == 0) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-0').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-0').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-0').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 1) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-1').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-1').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-1').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 2) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-2').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-2').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-2').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 3) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-3').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-3').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-3').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 4) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-4').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-4').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-4').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 5) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-5').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-5').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-5').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 6) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-6').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-6').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-6').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 7) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-7').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-7').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-7').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 8) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-8').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-8').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-8').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 9) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-9').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-9').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-9').attributes.y.value;
+        }
+        if (document.querySelector('#editPartieID').value == 10) {
+            document.querySelector('#namePartie').value = document.querySelector('#party-10').innerText;
+            document.querySelector('#x').value = document.querySelector('#party-10').attributes.x.value;
+            document.querySelector('#y').value = document.querySelector('#party-10').attributes.y.value;
         }
     }
 </script>
