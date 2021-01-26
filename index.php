@@ -9,7 +9,11 @@ $partiesClass = (new parties());
 $answersClass = (new answersClass());
 
 $answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "answer": "false" }, { "question_id": "3", "answer": "false" }
-, { "question_id": "4", "answer": "true" }, { "question_id": "5", "answer": "true" }, { "question_id": "6", "answer": "true" }]';
+, { "question_id": "4", "answer": "true" }, { "question_id": "5", "answer": "true" }, { "question_id": "6", "answer": "true" }, 
+{ "question_id": "7", "answer": "true" }, { "question_id": "8", "answer": "true" }, { "question_id": "9", "answer": "true" }, 
+{ "question_id": "10", "answer": "true" }, { "question_id": "11", "answer": "true" }, { "question_id": "12", "answer": "true" }, 
+{ "question_id": "13", "answer": "true" }, { "question_id": "14", "answer": "false" }, { "question_id": "15", "answer": "true" }, 
+{ "question_id": "16", "answer": "false" }, { "question_id": "17", "answer": "false" }]';
 
 $answersJsonArr = $answers;
 
