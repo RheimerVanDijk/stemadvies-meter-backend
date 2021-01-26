@@ -67,7 +67,7 @@ class parties
             }
             function sortByOrder($a, $b)
             {
-                return $a['distance'] > $b['distance'];
+                return $a['distance'] <=> $b['distance'];
             }
             usort($resultTotal, 'sortByOrder');
             $top3Result = array_slice($resultTotal, 0, 3);
