@@ -8,18 +8,26 @@ $questionsClass = (new questions());
 $partiesClass = (new parties());
 $answersClass = (new answersClass());
 
-$answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "answer": "false" }, { "question_id": "3", "answer": "false" }
+$answers = '[{  "question_id": "1",  "answer": "true" }, { "question_id": "2", "answer": "false" }, { "question_id": "3", "answer": "true" }
 , { "question_id": "4", "answer": "true" }, { "question_id": "5", "answer": "true" }, { "question_id": "6", "answer": "true" }, 
-{ "question_id": "7", "answer": "true" }, { "question_id": "8", "answer": "true" }, { "question_id": "9", "answer": "true" }, 
+{ "question_id": "7", "answer": "true" }, { "question_id": "8", "answer": "false" }, { "question_id": "9", "answer": "true" }, 
 { "question_id": "10", "answer": "true" }, { "question_id": "11", "answer": "true" }, { "question_id": "12", "answer": "true" }, 
-{ "question_id": "13", "answer": "true" }, { "question_id": "14", "answer": "false" }, { "question_id": "15", "answer": "true" }, 
+{ "question_id": "13", "answer": "false" }, { "question_id": "14", "answer": "false" }, { "question_id": "15", "answer": "true" }, 
 { "question_id": "16", "answer": "false" }, { "question_id": "17", "answer": "false" }]';
 
 $answersJsonArr = $answers;
 
 $calculatedAxis = $answersClass->calculateAnswers($answersJsonArr);
 
-$resultParties = $partiesClass->partyResult($calculatedAxis);
+var_dump($calculatedAxis);
+
+$resultParties = $partiesClass->partyResult(array("x_axis" => 4, "y_axis" => -1));
+
+var_dump($resultParties);
+
+$calculatedPercent = $answersClass->calcResultPercent($resultParties);
+
+var_dump($calculatedPercent);
 
 $result = $questionsClass->getQuestions();
 
@@ -28,7 +36,7 @@ $chosenParties = $partiesClass->chosenParties(1);
 $getParties = $partiesClass->getParties();
 
 
-var_dump($resultParties);
+//var_dump($calculatedAxis);
 
 $getParties = $partiesClass->getParties();
 // $resultParties = $partiesClass->partyResult(1, 5);

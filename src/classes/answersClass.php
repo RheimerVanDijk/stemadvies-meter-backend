@@ -1,6 +1,6 @@
 <?php
 require_once("dbClass.php");
-
+require_once("politicialPartiesClass.php");
 class answersClass
 {
     public function calculateAnswers($answersJsonArr)
@@ -35,6 +35,76 @@ class answersClass
                 }
             }
             return array("x_axis" => $xAxisVal, "y_axis" => $yAxisVal);
+        } catch (PDOException $e) {
+            return json_encode([
+                'type' => 'error',
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getsMaxAxis() {
+        try {
+            $yAxisPlusMax = 0;
+            $yAxisMinusMax = 0;
+            $xAxisPlusMax = 0;
+            $xAxisMinusMax = 0;
+            $connection = (new db)->connect();
+            $stmtX = $connection->prepare('SELECT * FROM `questions` WHERE axis = ?');
+            $stmtY = $connection->prepare('SELECT * FROM `questions` WHERE axis = ?');
+            $arrayMaxAxis = array();
+            if ($stmtY->execute(["y"])) {
+                while ($row = $stmtY->fetch(PDO::FETCH_ASSOC)) {
+                    $yAs= $row['value'];
+                    if ($yAs < 0) {
+                        $yAxisMinusMax++;
+                    } else {
+                        $yAxisPlusMax++;
+                    }
+                }
+            }
+            if ( $stmtX->execute(["x"])) {
+                while ($row = $stmtX->fetch(PDO::FETCH_ASSOC)) {
+                    $xAs= $row['value'];
+                    if ($xAs < 0) {
+                        $xAxisMinusMax++;
+                    } else {
+                        $xAxisPlusMax++;
+                    }
+                }
+            }
+            array_push($arrayMaxAxis, $xAxisMinusMax);
+            array_push($arrayMaxAxis, $xAxisPlusMax);
+            array_push($arrayMaxAxis, $yAxisMinusMax);
+            array_push($arrayMaxAxis, $yAxisPlusMax);
+            return max($arrayMaxAxis);
+        } catch (PDOException $e) {
+            return json_encode([
+                'type' => 'error',
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function calcResultPercent($topThree) {
+        try {
+            $maxAxis = $this->getsMaxAxis();
+            $distanceXpoint = pow(-$maxAxis - $maxAxis, 2);
+            $distanceYpoint = pow(-$maxAxis - $maxAxis, 2);
+            $distanceXYpoint = sqrt($distanceXpoint + $distanceYpoint);
+            $calculatedPercent = array();
+            foreach ($topThree as $party) {
+                $distanceTo = $distanceXYpoint - $party['distance'];
+                $percent = 100 / $distanceXYpoint * $distanceTo;
+                $partyArray = array(
+                    "id" => $party['id'],
+                    "politicParty" => $party['politicParty'],
+                    "distance" => $party['distance'],
+                    "distancePercent" => $percent,
+                );
+                array_push($calculatedPercent, $partyArray);
+            }
+            return $calculatedPercent;
         } catch (PDOException $e) {
             return json_encode([
                 'type' => 'error',
