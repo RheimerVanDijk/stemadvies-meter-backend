@@ -24,9 +24,9 @@ class questions
         try {
             $connection = (new db)->connect();
             $stmt = $connection->prepare('INSERT INTO `questions` SET question = :question, axis = :axis, value = :value');
-            $this->question = htmlspecialchars(strip_tags($_POST["question"]));
-            $this->axis = htmlspecialchars(strip_tags($_POST["axis"]));
-            $this->value = htmlspecialchars(strip_tags($_POST["valueAxis"]));
+            $this->question = htmlspecialchars(strip_tags($this->question));
+            $this->axis = htmlspecialchars(strip_tags($this->axis));
+            $this->value = htmlspecialchars(strip_tags($this->value));
             $stmt->bindParam(':question', $this->question);
             $stmt->bindParam(':axis', $this->axis);
             $stmt->bindParam(':value', $this->value);
