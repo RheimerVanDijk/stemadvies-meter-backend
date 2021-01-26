@@ -84,12 +84,12 @@ $name = 0;
 
 //Edit systeem mee bezig by Dante.
 //Vragen
-if(isset($_POST['Submit'])){
+if (isset($_POST['Submit'])) {
     $sql = "UPDATE `question` SET `question` = '" . mysqli_real_escape_string($conn, $_POST['vraag']) . "' , `question_id` =  '" . mysqli_real_escape_string($conn, $_POST['question_id']) . "' WHERE question_id = " . (int)$_POST['question_id'];
     $crud = null;
     $data = false;
     $result = $conn->query($sql);
-    if(!$result) echo mysqli_error();
+    if (!$result) echo mysqli_error();
 }
 
 if (isset($_GET['id'])) {
@@ -103,15 +103,14 @@ if (isset($_GET['id'])) {
             $Vraag = $row["question"];
         }
     }
-
 }
 //Politieke partijen
-if(isset($_POST['Submit'])){
+if (isset($_POST['Submit'])) {
     $sql = "UPDATE `name` SET `name` = '" . mysqli_real_escape_string($conn, $_POST['name']) . "' , `party_id` =  '" . mysqli_real_escape_string($conn, $_POST['party_id']) . "' WHERE party_id = " . (int)$_POST['party_id'];
     $crud = null;
     $data = false;
     $result = $conn->query($sql);
-    if(!$result) echo mysqli_error();
+    if (!$result) echo mysqli_error();
 }
 
 if (isset($_GET['id'])) {
@@ -125,7 +124,7 @@ if (isset($_GET['id'])) {
             $name = $row["name"];
         }
     }
-//
+    //
 }
 ?>
 
@@ -181,20 +180,20 @@ if (isset($_GET['id'])) {
         <h5>Partij aanpassen</h5>
         <form method="post" action="">
             <label>Partij </label>
-            <input type="text" name="Vraag" class="vraag" value="<?=$name ?>"><Br>
+            <input type="text" name="Vraag" class="vraag" value="<?= $name ?>"><Br>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Partij Veranderen</button>
         </form>
         <form method="post">
-            <input type="hidden" value="<?php echo $_GET['id'] ?>" name="id" >
+            <input type="hidden" value="" name="id">
             <div class="Class">
                 <div class="Vraag">
                     <h5>Vraag aanpassen</h5>
-                <label>Vraag </label>
-                <input type="text" name="Vraag" class="vraag" value="<?=$Vraag ?>">
-            </div>
-            <div class="Submit-e">
-                <input type="submit" class="btn btn-primary" value="Vraag aanpassen" name="Submit">
-            </div>
+                    <label>Vraag </label>
+                    <input type="text" name="Vraag" class="vraag" value="<?= $Vraag ?>">
+                </div>
+                <div class="Submit-e">
+                    <input type="submit" class="btn btn-primary" value="Vraag aanpassen" name="Submit">
+                </div>
         </form>
 
         <?php $questions = array();
