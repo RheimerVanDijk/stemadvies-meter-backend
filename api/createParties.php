@@ -14,7 +14,7 @@ $partiesClass = (new parties());
 $partiesClass->name = $data->name;
 $partiesClass->x_position = $data->x_position;
 $partiesClass->y_position = $data->y_position;
-$partiesClass->ammount_chosen = $data->ammount_chosen;
+$partiesClass->amount_chosen = $data->amount_chosen;
 
 $createParties = $partiesClass->createParties();
 

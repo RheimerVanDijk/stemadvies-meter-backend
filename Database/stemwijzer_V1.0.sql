@@ -33,14 +33,14 @@ CREATE TABLE `political_parties` (
   `name` varchar(255) NOT NULL,
   `x_position` tinyint(5) NOT NULL,
   `y_position` tinyint(5) NOT NULL,
-  `ammount_chosen` int(11) NOT NULL
+  `amount_chosen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `political_parties`
 --
 
-INSERT INTO `political_parties` (`party_id`, `name`, `x_position`, `y_position`, `ammount_chosen`) VALUES
+INSERT INTO `political_parties` (`party_id`, `name`, `x_position`, `y_position`, `amount_chosen`) VALUES
 (1, 'VVD', 4, -1, 0),
 (2, 'GroenLinks', -2, 4, 0),
 (3, 'PVV', 0, -2, 0),

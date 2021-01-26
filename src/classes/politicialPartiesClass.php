@@ -23,7 +23,7 @@ class parties
     {
         try {
             $connection = (new db)->connect();
-            $stmt = $connection->prepare('UPDATE `political_parties` SET ammount_chosen = ammount_chosen + 1 WHERE party_id = :party_id');
+            $stmt = $connection->prepare('UPDATE `political_parties` SET amount_chosen = amount_chosen + 1 WHERE party_id = :party_id');
             $stmt->execute([
                 "party_id" => $partyID,
             ]);
@@ -65,11 +65,12 @@ class parties
                     array_push($resultTotal, $result);
                 }
             }
-            function sortByOrder($a, $b) {
+            function sortByOrder($a, $b)
+            {
                 return $a['distance'] > $b['distance'];
             }
             usort($resultTotal, 'sortByOrder');
-            $top3Result = array_slice($resultTotal, 0 ,3);
+            $top3Result = array_slice($resultTotal, 0, 3);
             return $top3Result;
         } catch (PDOException $e) {
             return json_encode([
@@ -83,15 +84,15 @@ class parties
     {
         try {
             $connection = (new db)->connect();
-            $stmt = $connection->prepare('INSERT INTO `political_parties` SET name = :name, x_position = :x_position, y_position = :y_position, ammount_chosen = :ammount_chosen');
+            $stmt = $connection->prepare('INSERT INTO `political_parties` SET name = :name, x_position = :x_position, y_position = :y_position, amount_chosen = :amount_chosen');
             $this->name = htmlspecialchars(strip_tags($this->name));
             $this->x_position = htmlspecialchars(strip_tags($this->x_position));
             $this->y_position = htmlspecialchars(strip_tags($this->y_position));
-            $this->ammount_chosen = htmlspecialchars(strip_tags($this->ammount_chosen));
+            $this->amount_chosen = htmlspecialchars(strip_tags($this->amount_chosen));
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':x_position', $this->x_position);
             $stmt->bindParam(':y_position', $this->y_position);
-            $stmt->bindParam(':ammount_chosen', $this->ammount_chosen);
+            $stmt->bindParam(':amount_chosen', $this->amount_chosen);
             $stmt->execute();
             return json_encode([
                 'type' => 'success',
@@ -109,17 +110,17 @@ class parties
     {
         try {
             $connection = (new db)->connect();
-            $stmt = $connection->prepare('UPDATE `political_parties` SET name = :name, x_position = :x_position, y_position = :y_position, ammount_chosen = :ammount_chosen WHERE party_id = :party_id');
+            $stmt = $connection->prepare('UPDATE `political_parties` SET name = :name, x_position = :x_position, y_position = :y_position, amount_chosen = :amount_chosen WHERE party_id = :party_id');
             $this->party_id = htmlspecialchars(strip_tags($this->party_id));
             $this->name = htmlspecialchars(strip_tags($this->name));
             $this->x_position = htmlspecialchars(strip_tags($this->x_position));
             $this->y_position = htmlspecialchars(strip_tags($this->y_position));
-            $this->ammount_chosen = htmlspecialchars(strip_tags($this->ammount_chosen));
+            $this->amount_chosen = htmlspecialchars(strip_tags($this->amount_chosen));
             $stmt->bindParam(':party_id', $this->party_id);
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':x_position', $this->x_position);
             $stmt->bindParam(':y_position', $this->y_position);
-            $stmt->bindParam(':ammount_chosen', $this->ammount_chosen);
+            $stmt->bindParam(':amount_chosen', $this->amount_chosen);
             $stmt->execute();
             return json_encode([
                 'type' => 'success',

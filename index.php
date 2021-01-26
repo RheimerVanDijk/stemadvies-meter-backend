@@ -40,7 +40,6 @@ $getParties = $partiesClass->getParties();
 $getParties = $partiesClass->getParties();
 
 $partyResult = json_encode($getParties);
-
 $partyResult = json_decode($partyResult, true);
 
 $questionsResult = json_encode($result);
@@ -55,7 +54,7 @@ if (isset($_POST["addNewPartie"])) {
     $partiesClass->name = $_POST["namePartie"];
     $partiesClass->x_position = $_POST["x"];
     $partiesClass->y_position = $_POST["y"];
-    $partiesClass->ammount_chosen = $_POST["ammount_chosen"];
+    $partiesClass->amount_chosen = $_POST["amount_chosen"];
 }
 
 if (isset($_POST["addNewQuestion"])) {
@@ -149,7 +148,7 @@ if (isset($_GET['id'])) {
             <input type="text" name="namePartie" required>
             <input type="number" min="-5" max="5" name="x" required>
             <input type="number" min="-5" max="5" name="y" required>
-            <input type="hidden" value="0" name="ammount_chosen">
+            <input type="hidden" value="0" name="amount_chosen">
             <button type="submit" class="btn btn-primary" name="addNewPartie">Partij Toevoegen</button>
         </form>
 
