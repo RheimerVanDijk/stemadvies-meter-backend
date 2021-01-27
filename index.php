@@ -76,6 +76,15 @@ if (isset($_POST["addNewQuestion"])) {
     header("Location: index.php");
 }
 
+if (isset($_POST["editQuestion"])) {
+    $questionsClass->question_id = $_POST["editQuestionID"];
+    $questionsClass->question = $_POST["question"];
+    $questionsClass->axis = $_POST["axis"];
+    $questionsClass->value = $_POST["valueAxis"];
+    $questionsClass->updateQuestions();
+    header("Location: index.php");
+}
+
 if (isset($_GET["party_id"])) {
     $partiesClass->party_id = $_GET["party_id"];
     $partiesClass->deleteParties();
@@ -115,8 +124,8 @@ if (isset($_GET["question_id"])) {
             <button type="submit" class="btn btn-primary" name="addNewPartie">Partij Toevoegen</button><br>
             <h5>Partij aanpassen</h5>
             <label>Partij </label>
-            <input type="number" min="0" max="999" id="editPartieID" name="editPartieID" value="0"><Br>
-            <button type="submit" class="btn btn-primary" name="editPartie">Partij Veranderen</button>
+            <input type="number" min="0" max="999" id="editPartieID" name="editPartieID" value="0">
+            <button type="submit" class="btn btn-primary" name="editPartie">Partij Aanpassen</button>
         </form>
 
         <?php $parties = array();
@@ -130,35 +139,27 @@ if (isset($_GET["question_id"])) {
 
         <h5>Vragen toevoegen</h5>
         <form method="post" action="">
-            <input type="text" name="question">
+            <input type="text" id="nameQuestion" name="question" placeholder="Vraag" required>
             <select name="axis" id="axis">
                 <option disabled selected value> -- selecteer een optie -- </option>
                 <option value="x" id="linksRechts">Links of Rechts</option>
                 <option value="y" id="progressiefConservatief">Progressief of Conservatief</option>
             </select>
-            <select name="valueAxis" id="valueAxis" style="visibility: hidden">
+            <select name="valueAxis" id="valueAxis" style="visibility: visible">
                 <option disabled selected value> -- selecteer een optie -- </option>
                 <option value="-1" id="minus"></option>
                 <option value="1" id="plus"></option>
             </select>
             <button type="submit" class="btn btn-primary" name="addNewQuestion">Vraag Toevoegen</button>
-        </form>
-        <form method="post">
-            <input type="hidden" value="" name="id">
-            <div class="Class">
-                <div class="Vraag">
-                    <h5>Vraag aanpassen</h5>
-                    <label>Vraag </label>
-                    <input type="text" name="Vraag" class="vraag" value="">
-                </div>
-                <div class="Submit-e">
-                    <input type="submit" class="btn btn-primary" value="Vraag aanpassen" name="Submit">
-                </div>
+            <h5>Vraag aanpassen</h5>
+            <label>Vraag </label>
+            <input type="number" min="0" max="999" id="editQuestionID" name="editQuestionID" value="0" onchange="axisTest();">
+            <button type="submit" class="btn btn-primary" name="editQuestion">Vraag Aanpassen</button>
         </form>
 
         <?php $questions = array();
         for ($i = 0; $i < count($questionsResult); $i++) {
-            echo '<div id="question-' . $i . '">' . $questionsResult[$i]["question_id"] . '. ' . $questionsResult[$i]["question"] . ' <a href="index.php?question_id=' . $questionsResult[$i]["question_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
+            echo '<div id="question-' . $questionsResult[$i]["question_id"] . '" axis="' . $questionsResult[$i]["axis"] . '" value="' . $questionsResult[$i]["value"] . '">' . $questionsResult[$i]["question"] . ' <a href="index.php?question_id=' . $questionsResult[$i]["question_id"] . '"><i class="far fa-trash-alt"></i></a></div>';
         } ?>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -167,6 +168,19 @@ if (isset($_GET["question_id"])) {
 </body>
 <script>
     document.getElementById('axis').onchange = function() {
+        document.getElementById("valueAxis").style.visibility = "visible";
+        if (document.getElementById("axis").value == "x") {
+            document.getElementById("minus").innerHTML = "Links";
+            document.getElementById("plus").innerHTML = "Rechts";
+        } else if (document.getElementById("axis").value == "y") {
+            document.getElementById("minus").innerHTML = "Conservatief";
+            document.getElementById("plus").innerHTML = "Progressief";
+        }
+    }
+
+    // document.getElementById('axis').addEventListener("change", axis);
+
+    function axisTest() {
         document.getElementById("valueAxis").style.visibility = "visible";
         if (document.getElementById("axis").value == "x") {
             document.getElementById("minus").innerHTML = "Links";
@@ -234,6 +248,166 @@ if (isset($_GET["question_id"])) {
             document.querySelector('#namePartie').value = document.querySelector('#party-10').innerText;
             document.querySelector('#x').value = document.querySelector('#party-10').attributes.x.value;
             document.querySelector('#y').value = document.querySelector('#party-10').attributes.y.value;
+        }
+    }
+
+    document.querySelector('#editQuestionID').addEventListener("change", editQuestion);
+
+    function editQuestion() {
+        if (document.querySelector('#editQuestionID').value == 0) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-0').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-0').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-0').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 1) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-1').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-1').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-1').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 2) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-2').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-2').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-2').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 3) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-3').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-3').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-3').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 4) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-4').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-4').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-4').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 5) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-5').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-5').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-5').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 6) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-6').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-6').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-6').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 7) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-7').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-7').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-7').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 8) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-8').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-8').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-8').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 9) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-9').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-9').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-9').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 10) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-10').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-10').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-10').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 11) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-11').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-11').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-11').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 12) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-12').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-12').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-12').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 13) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-13').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-13').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-13').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 14) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-14').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-14').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-14').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 15) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-15').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-15').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-15').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 16) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-16').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-16').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-16').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 17) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-17').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-17').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-17').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 18) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-18').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-18').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-18').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 19) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-19').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-19').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-19').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 20) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-20').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-20').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-20').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 21) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-21').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-21').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-21').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 22) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-22').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-22').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-22').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 23) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-23').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-23').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-23').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 24) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-24').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-24').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-24').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 25) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-25').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-25').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-25').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 26) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-26').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-26').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-26').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 27) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-27').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-27').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-27').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 28) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-28').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-28').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-28').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 29) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-29').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-29').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-29').attributes.value.value;
+        }
+        if (document.querySelector('#editQuestionID').value == 30) {
+            document.querySelector('#nameQuestion').value = document.querySelector('#question-30').innerText;
+            document.querySelector('#axis').value = document.querySelector('#question-30').attributes.axis.value;
+            document.querySelector('#valueAxis').value = document.querySelector('#question-30').attributes.value.value;
         }
     }
 </script>
