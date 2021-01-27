@@ -101,6 +101,7 @@ class answersClass
                     "politicParty" => $party['politicParty'],
                     "distance" => $party['distance'],
                     "distancePercent" => $percent,
+                    "image" => $party['image']
                 );
                 array_push($calculatedPercent, $partyArray);
             }

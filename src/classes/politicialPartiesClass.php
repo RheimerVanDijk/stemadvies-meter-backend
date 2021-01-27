@@ -54,13 +54,15 @@ class parties
                     $yAs = $row['y_position'];
                     $politicalPartyID = $row['party_id'];
                     $politicalPartyName = $row['name'];
+                    $image = $row['image'];
                     $distanceXpoint = pow($x - $xAs, 2);
                     $distanceYpoint = pow($y - $yAs, 2);
                     $distantXYpoint = sqrt($distanceXpoint + $distanceYpoint);
                     $result = array(
                         "id" => $politicalPartyID,
                         "politicParty" => $politicalPartyName,
-                        "distance" => $distantXYpoint
+                        "distance" => $distantXYpoint,
+                        "image" => $image
                     );
                     array_push($resultTotal, $result);
                 }

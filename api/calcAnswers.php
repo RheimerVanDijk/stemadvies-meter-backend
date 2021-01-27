@@ -15,6 +15,10 @@ $location = $answersClass->calculateAnswers($data);
 $top3Parties = $politicialPartyClass->partyResult($location);
 $calculatedPercentParties = $answersClass->calcResultPercent($top3Parties);
 
+for ($i = 0; $i < count($calculatedPercentParties); $i++) {
+  $calculatedPercentParties[$i]["image"] = "data:image/png;base64," . base64_encode(file_get_contents($calculatedPercentParties[$i]["image"]));
+}
+
 $returnData = [
   "location" => $location,
   "top3Parties" => $calculatedPercentParties
